@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Be My Valentine 🧸💖</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:"Comic Sans MS", cursive;
+}
+
+body{
+    margin:0;
+    height:100vh;
+    overflow:hidden;
+    background:linear-gradient(135deg,#ffd6e8,#fff5f9);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+}
+
+/* ---------- CONTENT ---------- */
+.content{
+    padding-top:40px;
+}
+
+h1{
+    font-size:3rem;
+    color:#ff4d88;
+}
+
+.bears{
+    font-size:5rem;
+}
+
+#gifs img{
+    width:180px;
+    border-radius:25px;
+    margin:8px;
+    box-shadow:0 8px 18px rgba(0,0,0,.15);
+}
+
+/* ---------- BUTTONS ---------- */
+button{
+    position:fixed;
+    border:none;
+    padding:14px 34px;
+    font-size:22px;
+    border-radius:40px;
+    cursor:pointer;
+    transition:.25s;
+    z-index:5;
+}
+
+#yes{
+    background:#ff6fa3;
+    color:white;
+}
+
+#no{
+    background:#ddd;
+}
+
+/* ---------- BEAUTIFUL SUCCESS TEXT ---------- */
+.success{
+    margin-top:40px;
+    font-size:5rem;
+    font-weight:bold;
+
+    background:linear-gradient(45deg,#ff4d88,#ff85c1,#ff4d88);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    text-shadow:
+        0 0 12px rgba(255,105,180,.6),
+        0 0 25px rgba(255,105,180,.4);
+
+    animation: pop 0.5s ease, bounce 1.5s infinite;
+}
+
+/* pop in */
+@keyframes pop{
+    from{ transform:scale(0); opacity:0; }
+    to{ transform:scale(1); opacity:1; }
+}
+
+/* gentle bounce */
+@keyframes bounce{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-12px); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="content">
+    <div class="bears">🐻💕🐻</div>
+
+    <h1 id="question">Will you be my Valentine?</h1>
+
+    <div id="gifs">
+        <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExd3JqeGdqNGl4Nnh2cHd0M2xzOWZleGZqNXMwbGV1azh5dXV3cXMwOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/gjHkRHSuHqu99y9Yjt/giphy.gif">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWxldzYyMWw5ZGRvMXVhaGQydmYzcWFwMmJldmhocmZ0cTBpNmE0bSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Ie4CIIvQS0bk3zwZlM/giphy.gif">
+    </div>
+
+    <div id="message"></div>
+    <div>
+        <button id="yes">Yes 💖</button>
+    </div>
+</div>
+
+
+<button id="no">No 😢</button>
+
+<script>
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const gifs = document.getElementById("gifs");
+const message = document.getElementById("message");
+const question = document.getElementById("question");
+
+let scale = 1;
+
+/* hide YES initially */
+yesBtn.style.display = "none";
+
+/* show YES after 6 seconds centered below gifs */
+setTimeout(() => {
+    yesBtn.style.display = "inline-block";
+}, 6000);
+
+
+/* move anywhere on screen */
+function randomPosition(btn){
+    const maxX = window.innerWidth - btn.offsetWidth;
+    const maxY = window.innerHeight - btn.offsetHeight;
+
+    btn.style.left = Math.random()*maxX + "px";
+    btn.style.top  = Math.random()*maxY + "px";
+}
+
+/* only NO moves at start */
+randomPosition(noBtn);
+
+/* NO runs away */
+noBtn.addEventListener("mouseenter", () => {
+    randomPosition(noBtn);
+});
+
+/* clicking NO */
+noBtn.addEventListener("click", () => {
+
+    /* make YES free-floating only now */
+    yesBtn.style.position = "fixed";
+
+    scale += 0.35;
+
+    yesBtn.style.transform = `scale(${scale})`;
+    yesBtn.textContent = "Are you sure? 🥺💗";
+    question.textContent = "Please say yes 🧸💞";
+
+    randomPosition(noBtn);
+    randomPosition(yesBtn);
+});
+
+/* YES clicked */
+yesBtn.addEventListener("click", () => {
+
+    gifs.innerHTML = `
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWxldzYyMWw5ZGRvMXVhaGQydmYzcWFwMmJldmhocmZ0cTBpNmE0bSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/IzXiddo2twMmdmU8Lv/giphy.gif">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWxldzYyMWw5ZGRvMXVhaGQydmYzcWFwMmJldmhocmZ0cTBpNmE0bSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/wPnbkEcr2tXiTN0Lmq/giphy.gif">
+    `;
+
+    question.textContent = "";
+    yesBtn.style.display = "none";
+    noBtn.style.display = "none";
+
+    message.innerHTML =
+      `<div class="success">💖 C U on 14th Feb! 🧸✨</div>`;
+});
+</script>
+
+
+</body>
+</html>
